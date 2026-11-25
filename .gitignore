@@ -221,3 +221,12 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Project data and generated files (the dataset is not redistributed, see README.md)
+data/raw/*
+!data/raw/.gitkeep
+data/embeddings/*
+!data/embeddings/.gitkeep
+data/mapper/*
+!data/mapper/.gitkeep
+outputs/

@@ -1,0 +1,10 @@
+output_path: ./data/embeddings/decomposition/
+model_id: infgrad/Jasper-Token-Compression-600M
+data_loader: senate
+text_column: decompositions
+id_column: id
+user_id_column: bioguide
+created_at_column: datetime
+partition_cols:
+  - created_at_day
+batch_size: 1000

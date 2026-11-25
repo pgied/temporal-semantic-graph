@@ -1,0 +1,7 @@
+defaults:
+  - _self_
+  - encoder: decomposition
+  - mapper: default
+  - visualize: default
+random_seed: 42
+log_wandb: True
