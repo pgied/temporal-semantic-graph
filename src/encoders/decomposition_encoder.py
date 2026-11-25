@@ -1,4 +1,5 @@
 
+import shutil
 from pathlib import Path
 
 from omegaconf import DictConfig, OmegaConf
@@ -9,7 +10,7 @@ from sentence_transformers import SentenceTransformer
 import torch
 from tqdm import tqdm
 
-from src.data.loader import load_decompositions_df
+from src.data.loader import load_decompositions_df, to_created_at_day
 from src.utils import device_manager
 
 DATA_DIR = Path(__file__).resolve().parents[2] / "data"
@@ -29,7 +30,8 @@ def encode_documents(full_cfg: DictConfig):
 
     # load data
     df = load_decompositions_df(DATA_DIR_RAW / TWEETS_FILE, DATA_DIR_RAW / DECOMPOSITIONS_FILE)
-    df[partition_cols] = df[created_at_column].dt.strftime("%Y-%m-%d")
+    # Same day definition as in the annotations: US Eastern time, not UTC (see loader).
+    df[partition_cols] = to_created_at_day(df[created_at_column])
     
     # Compose SentenceTransformer
     model = SentenceTransformer(
@@ -44,6 +46,11 @@ def encode_documents(full_cfg: DictConfig):
     )
     
     meta_data_columns = list(df.columns.values)
+
+    # Start from an empty output folder: write_to_dataset adds new files next to existing ones,
+    # so files from an earlier run would stay and every tweet would be stored twice.
+    if EMBEDDINGS_DIR.exists():
+        shutil.rmtree(EMBEDDINGS_DIR)
 
     for i in tqdm(range(0, len(df), batch_size)):
         batch_df = df[i: i + batch_size]
