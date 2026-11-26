@@ -230,3 +230,5 @@ data/embeddings/*
 data/mapper/*
 !data/mapper/.gitkeep
 outputs/
+
+.DS_Store
