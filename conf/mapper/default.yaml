@@ -1,2 +1,29 @@
-defaults:
-  - _self_
+input_path: ./data/embeddings/decomposition/
+output_path: ./data/mapper/decomposition/
+text_column: decompositions
+id_column: id
+user_id_column: bioguide
+created_at_column: datetime
+encoding_text_column: decomposition
+message_text_column: tweet
+lens:
+  attribute:
+    name: datetime
+    type: datetime
+cover:
+  to_use: proximity_cubical_cover
+  proximity_cubical_cover:
+    # n_intervals: 2000
+    n_intervals: 1000
+    # n_intervals: 100
+    # n_intervals: 400
+    overlap_frac: 0.5
+clusterer:
+  to_use: hdbscan
+  hdbscan:
+    min_cluster_size: 2
+    # min_cluster_size: 30
+    # min_cluster_size: 5
+    min_samples: null
+    metric: cosine
+    n_jobs: 1

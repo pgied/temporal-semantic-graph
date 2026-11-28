@@ -1,12 +1,11 @@
 import hydra
 from omegaconf import DictConfig
 
-from src import encoders
-
+from src.mappers import mapper_graph
 
 @hydra.main(version_base=None, config_path="../conf", config_name="conf")
 def main(full_cfg: DictConfig):
-    print('implement')
+    mapper_graph.create_mapper_graph(full_cfg)
         
 
 if __name__ == "__main__":
